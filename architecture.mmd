@@ -1,0 +1,12 @@
+flowchart LR
+ A[Client / Dashboard] --> B[FastAPI prediction service]
+ B --> C[Versioned model artifact]
+ B --> D[Prometheus metrics]
+ B --> E[Prediction feature buffer]
+ E --> F[PSI drift monitor]
+ G[Labeled feedback] --> H[Scheduled retraining]
+ I[Reference dataset] --> H
+ H --> J[MLflow experiments]
+ H --> C
+ K[GitHub Actions CI] --> L[Container registry]
+ L --> M[Cloud runtime - manual setup]

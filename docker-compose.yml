@@ -1,0 +1,33 @@
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./artifacts:/app/artifacts
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
+    environment:
+      MODEL_PATH: artifacts/model.joblib
+      META_PATH: artifacts/metadata.json
+      DATA_PATH: data/reference.csv
+      MLFLOW_TRACKING_URI: file:///app/mlruns
+
+  dashboard:
+    build: .
+    command: streamlit run dashboard/app.py --server.address 0.0.0.0 --server.port 8501
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      - api
+
+  mlflow:
+    build: .
+    command: mlflow ui --backend-store-uri file:///app/mlruns --host 0.0.0.0 --port 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/app/mlruns
