@@ -1,11 +1,16 @@
 
 import os
+import sys
 import json
 from pathlib import Path
 
 import joblib
 import pandas as pd
 import streamlit as st
+
+# Add project root to Python import path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT_DIR))
 
 from src.config import FEATURES, MODEL_PATH, META_PATH
 from src.data import load_reference
